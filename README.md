@@ -1,11 +1,4 @@
 ```
-tree
-└── primary
-    ├── cq-author-4502.jar
-    └── license.properties
-```
-
-```
 java -jar cq-author-4502.jar`
     Loading quickstart properties: default
     Loading quickstart properties: instance
@@ -34,7 +27,7 @@ curl -uadmin:admin -I http://localhost:4502/projects.html`
     X-Powered-By: Jetty(9.2.9.v20150224)
 ```
 
-# { Ctrl+C for AEM instance to shutdown }
+__Ctrl+C for AEM instance to shutdown__
 
 Copy the primary config and start the primary
 ```
@@ -49,6 +42,10 @@ cp -r config/install.standby/ primary/crx-quickstart/install/install.standby
 
 CQ_PORT=4504 CQ_RUNMODE=standby standby/crx-quickstart/bin/start
 ```
+
+Once everything i
+
+
 
 Check the processes are running with the correct runmode/port
 ```
@@ -125,4 +122,42 @@ Content-Type: text/html; charset=UTF-8
 Content-Length: 40174
 Server: Jetty(9.2.9.v20150224)
 X-Powered-By: Jetty(9.2.9.v20150224)
+```
+
+The final directory structure should look something like this (abridged):
+```
+├── README.md
+├── config
+│   ├── install.primary
+│   │   ├── org.apache.jackrabbit.oak.plugins.segment.SegmentNodeStoreService.config
+│   │   └── org.apache.jackrabbit.oak.plugins.segment.standby.store.StandbyStoreService.config
+│   └── install.standby
+│       ├── org.apache.jackrabbit.oak.plugins.segment.SegmentNodeStoreService.config
+│       └── org.apache.jackrabbit.oak.plugins.segment.standby.store.StandbyStoreService.config
+├── primary
+│   ├── cq-author-4502.jar
+│   ├── crx-quickstart
+│   │   ├── install
+│   │   │   ├── install.primary
+│   │   └── repository
+│   │       ├── index
+│   │       └── segmentstore
+│   └── license.properties
+└── standby
+│   ├── cq-author-4502.jar
+│   ├── crx-quickstart
+│   │   ├── install
+│   │   │   └── install.primary
+│   │   └── repository
+│   │       ├── index
+│   │       └── segmentstore
+│   └── license.properties
+├── newstandby
+│   ├── cq-author-4502.jar
+│   ├── crx-quickstart
+│   │   │   └── install.standby
+│   │   └── repository
+│   │       ├── index
+│   │       └── segmentstore
+│   └── license.properties    
 ```
