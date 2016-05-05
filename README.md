@@ -1,3 +1,4 @@
+## Install AEM
 ```
 java -jar cq-author-4502.jar`
     Loading quickstart properties: default
@@ -13,6 +14,7 @@ java -jar cq-author-4502.jar`
     Press CTRL-C to shutdown the Quickstart server...
 ```
 
+## Check it is up and running
 ```
 curl -uadmin:admin -I http://localhost:4502/projects.html`
     HTTP/1.1 200 OK
@@ -27,27 +29,23 @@ curl -uadmin:admin -I http://localhost:4502/projects.html`
     X-Powered-By: Jetty(9.2.9.v20150224)
 ```
 
-__Ctrl+C for AEM instance to shutdown__
+## Ctrl+C for AEM instance to shutdown
 
-Copy the primary config and start the primary
+## Copy the primary config and start the primary
 ```
 cp -r config/install.primary/ primary/crx-quickstart/install/install.primary
 
 CQ_RUNMODE=primary primary/crx-quickstart/bin/start
 ```
 
-Copy standby config and start standby server
+## Copy standby config and start standby server
 ```
 cp -r config/install.standby/ primary/crx-quickstart/install/install.standby
 
 CQ_PORT=4504 CQ_RUNMODE=standby standby/crx-quickstart/bin/start
 ```
 
-Once everything i
-
-
-
-Check the processes are running with the correct runmode/port
+## Check the processes are running with the correct runmode/port
 ```
 ps  -ef |grep java | grep -v grep
 
@@ -55,16 +53,17 @@ ps  -ef |grep java | grep -v grep
   501 89991     1   0  2:46pm ttys006    1:15.98 /usr/bin/java -server -Xmx1024m -XX:MaxPermSize=256M -Djava.awt.headless=true -Dsling.run.modes=primary,crx3,crx3tar -jar crx-quickstart/app/cq-quickstart-6.1.0-standalone-quickstart.jar start -c crx-quickstart -i launchpad -p 4502 -Dsling.properties=conf/sling.properties
 ```  
 
-Check standby status
+## Check Standby status
 `open http://localhost:4504/system/console/jmx/org.apache.jackrabbit.oak%3Aid%3D%223981d89a-1e2e-4e3d-adb2-f2673ff8aab5%22%2Cname%3DStatus%2Ctype%3D%22Standby%22`
 
-Check Primary status
+## Check Primary status
 `open http://localhost:4502/system/console/jmx/org.apache.jackrabbit.oak%3Aid%3D8023%2Cname%3DStatus%2Ctype%3D%22Standby%22`
 Note: Check the status of the client by searching for "standby" on the jmx system console.  Clients get assigned a unique guid.
 
-# { Create some pages, edit some pages, etc }
+## Create some pages, edit some pages, etc
+Login to the author instance, create/copy some pages
 
-Stop the instances
+## Stop the instances
 ```
 primary/crx-quickstart/bin/stop
   05.05.2016 15:00:41.038 *INFO * [main] Setting sling.home=. (command line)
@@ -77,26 +76,25 @@ standby/crx-quickstart/bin/stop
   Application not running
 ```
 
-Create a copy of the standby
+## Create a copy of the standby
 `cp -r standby newstandby`
 
-Copy the config to the new standby
+## Copy the config to the new standby
 `cp -r config/install.standby/ newstandby/crx-quickstart/install/install.standby`
 
-Copy the primary config to the old standby & remove standby config
+## Copy the primary config to the old standby & remove standby config
 ```
 cp -r config/install.primary/ standby/crx-quickstart/install/install.primary
 rm -rf standby/crx-quickstart/install/install.standby/
 ```
 
-Start the standby as the new primary
+## Start the standby as the new primary
 `CQ_RUNMODE=primary standby/crx-quickstart/bin/start`
 
-Start the newstandby as the new standby
+## Start the newstandby as the new standby
 `CQ_PORT=4504 CQ_RUNMODE=standby newstandby/crx-quickstart/bin/start`
 
-
-Verify CMS access on the new primary
+## Verify CMS access on the new primary
 ```
 curl -I -uadmin:admin http://localhost:4502/projects.html
 HTTP/1.1 200 OK
@@ -111,7 +109,7 @@ Server: Jetty(9.2.9.v20150224)
 X-Powered-By: Jetty(9.2.9.v20150224)
 ```
 
-Verify console access on the new standby
+## Verify console access on the new standby
 ```
 curl -I -uadmin:admin http://localhost:4504/system/console/jmx
 HTTP/1.1 200 OK
@@ -124,7 +122,7 @@ Server: Jetty(9.2.9.v20150224)
 X-Powered-By: Jetty(9.2.9.v20150224)
 ```
 
-The final directory structure should look something like this (abridged):
+*The final directory structure should look something like this (abridged):*
 ```
 ├── README.md
 ├── config
