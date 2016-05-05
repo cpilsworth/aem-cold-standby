@@ -44,6 +44,7 @@ cp -r config/install.standby/ primary/crx-quickstart/install/install.standby
 
 CQ_PORT=4504 CQ_RUNMODE=standby standby/crx-quickstart/bin/start
 ```
+NOTE: The standby configuration will need to be updated to point to the primary if on a different host
 
 ## Check the processes are running with the correct runmode/port
 ```
@@ -81,6 +82,7 @@ standby/crx-quickstart/bin/stop
 
 ## Copy the config to the new standby
 `cp -r config/install.standby/ newstandby/crx-quickstart/install/install.standby`
+NOTE: The standby configuration will need to be updated to point to the primary if on a different host
 
 ## Copy the primary config to the old standby & remove standby config
 ```
@@ -93,6 +95,8 @@ rm -rf standby/crx-quickstart/install/install.standby/
 
 ## Start the newstandby as the new standby
 `CQ_PORT=4504 CQ_RUNMODE=standby newstandby/crx-quickstart/bin/start`
+
+NOTE: The change in port is not necessary if we are operating on different hosts.
 
 ## Verify CMS access on the new primary
 ```
